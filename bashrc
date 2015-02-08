@@ -2,6 +2,8 @@
 [ -z "$P#S1" ] && return
 
 export PS1="\[\e[0;91m\]\u\[\e[0;36m\]@\[\e[0;91m\]\h\[\e[0m\] \[\e[0;36m\]\W\[\e[0m\] \[\e[1;91m\]:\[\e[0m\]"
+#export PS1="\u@\h:\W\\$ "
+#export PS1="\[$(tput sgr0)\]\[$(tput setaf 1)\]\u\[$(tput setaf 6)\]@\[$(tput setaf 1)\]\h \[$(tput setaf 6)\]\W\[$(tput setaf 1)\]\\$ \[$(tput sgr0)\]"
 
 ### ALIASES ###
   alias c='clear'
