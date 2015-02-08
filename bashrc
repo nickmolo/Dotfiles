@@ -1,5 +1,5 @@
 # If not running interactively, don't do anything
-[ -z "$PS1" ] && return
+[ -z "$P#S1" ] && return
 
 export PS1="\[\e[0;91m\]\u\[\e[0;36m\]@\[\e[0;91m\]\h\[\e[0m\] \[\e[0;36m\]\W\[\e[0m\] \[\e[1;91m\]:\[\e[0m\]"
 
@@ -8,13 +8,14 @@ export PS1="\[\e[0;91m\]\u\[\e[0;36m\]@\[\e[0;91m\]\h\[\e[0m\] \[\e[0;36m\]\W\[\
   alias c='clear'
   alias g='git'
   alias vi='vim'
+  alias l='ls'
 
   #Make Things Look Nice
   alias df='df -h'
   alias du='du -ch'
   alias diff="$HOME/.colordiff"
-  alias grep='grep --color=auto'
-  alias ls='ls -hF --color=auto'
+  alias grep='grepo'
+  alias ls='ls -hGF'
   alias mkdir='mkdir -pv'
  
   # Enable aliases to be sudo’ed
@@ -60,29 +61,42 @@ export PS1="\[\e[0;91m\]\u\[\e[0;36m\]@\[\e[0;91m\]\h\[\e[0m\] \[\e[0;36m\]\W\[\
   fi
 
 ### FUNCTIONS ###
-  
-  e () {
+
+# extract a file
+function extract {
+  if [ -z "$1" ]; then
+    # display usage if no parameters given
+    echo "Usage: extract <path/file_name>.<zip|rar|bz2|gz|tar|tbz2|tgz|Z|7z|xz|ex|tar.bz2|tar.gz|tar.xz>"
+  else
     if [ -f $1 ] ; then
+      # NAME=${1%.*}
+      # mkdir $NAME && cd $NAME
       case $1 in
-        *.tar.bz2) tar xvjf $1 && cd $(basename "$1" .tar.bz2) ;;
-        *.tar.gz)  tar xvzf $1 && cd $(basename "$1" .tar.gz) ;;
-        *.tar.xz)  tar Jxvf $1 && cd $(basename "$1" .tar.xz) ;;
-        *.bz2)     bunzip2 $1 && cd $(basename "$1" /bz2) ;;
-        *.rar)     unrar x $1 && cd $(basename "$1" .rar) ;;
-        *.gz)      gunzip $1 && cd $(basename "$1" .gz) ;;
-        *.tar)     tar xvf $1 && cd $(basename "$1" .tar) ;;
-        *.tbz2)    tar xvjf $1 && cd $(basename "$1" .tbz2) ;;
-        *.tgz)     tar xvzf $1 && cd $(basename "$1" .tgz) ;;
-        *.zip)     unzip $1 && cd $(basename "$1" .zip) ;;
-        *.Z)       uncompress $1 && cd $(basename "$1" .Z) ;;
-        *.7z)      7z x $1 && cd $(basename "$1" .7z) ;;
-        *)         echo "don't know how to extract '$1'..." ;;
+        *.tar.bz2) tar xvjf ../$1 ;;
+        *.tar.gz) tar xvzf ../$1 ;;
+        *.tar.xz) tar xvJf ../$1 ;;
+        *.lzma) unlzma ../$1 ;;
+        *.bz2) bunzip2 ../$1 ;;
+        *.rar) unrar x -ad ../$1 ;;
+        *.gz) gunzip ../$1 ;;
+        *.tar) tar xvf ../$1 ;;
+        *.tbz2) tar xvjf ../$1 ;;
+        *.tgz) tar xvzf ../$1 ;;
+        *.zip) unzip ../$1 ;;
+        *.Z) uncompress ../$1 ;;
+        *.7z) 7z x ../$1 ;;
+        *.xz) unxz ../$1 ;;
+        *.exe) cabextract ../$1 ;;
+        *) echo "extract: '$1' - unknown archive method" ;;
       esac
-   else
-       echo "'$1' is not a valid file!"
-   fi
-  }
-  
+    else
+      echo "$1 - file does not exist"
+    fi
+  fi
+}
+
+alias x="extract"
+
 ### VARIABLES ###
 
   export BLOCKSIZE=M
@@ -118,13 +132,7 @@ export PS1="\[\e[0;91m\]\u\[\e[0;36m\]@\[\e[0;91m\]\h\[\e[0m\] \[\e[0;36m\]\W\[\
   shopt -s checkwinsize
   shopt -s nocaseglob
 
-## Personal Addons
-alias update='brew update; brew upgrade; brew cleanup; sudo gem update'
-
-#RCAC Addition
-alias edac='grep "[0-9]" /sys/devices/system/edac/mc/mc*/csrow*/ch*_ce_count; grep "[0-9]" /sys/devices/system/edac/mc/mc*/ue_count; grep "[0-9]" /sys/devices/system/edac/mc/mc*/ce_count'
-alias cfupdate="sudo /var/cfengine/bin/cfagent -qvK"
-alias shatter="rdesktop shatter2 -g 1680x1050"
-export PATH=/usr/local/bin:/usr/bin:/bin:/usr/games:/usr/site/rcac/scripts:/sbin:/usr/pbs/bin/:/apps/rhel5/iperf/bin:/usr/sbin:/opt/condor/sbin
+## Brew Management
+alias update='brew update; brew upgrade; brew cleanup'
 
 cd $HOME

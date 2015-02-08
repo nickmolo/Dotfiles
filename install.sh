@@ -16,13 +16,6 @@ cp -f htop $HOME/.htop
 cp -f htoprc $HOME/.htoprc
 cp -f osx $HOME/.osx
 
-SYSTEM=`uname -a`
-if [[ $SYSTEM =~ .*Darwin.* ]]; then
-  cp -f pt/osx-pt $HOME/.pt
-else
-  cp -f pt/linux-pt $HOME/.pt
-fi
-
 cp -rf lesspipe .lesspipe
 cp -rf .lesspipe $HOME
 rm -rf .lesspipe

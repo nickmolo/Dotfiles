@@ -1,38 +1,60 @@
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Filename: .vimrc
 " Sections:
-"    -> General
-"    -> VIM user interface
-"    -> Colors and Fonts
-"    -> Files and backups
-"    -> Text, tab and indent related
-"    -> Moving around, tabs, windows and buffers
-"    -> Status line
-"    -> Addons
-"
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"   -> Vuldle
+"   -> General
+"   -> VIM UI
+"   -> Colors and Fonts
+"   -> Files and backups
+"   -> Text, tab and indent related
+"   -> Plugin Specific
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => General
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" -> Vuldle                                                               
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Automatically setup Vundle on first run
 
-" Sets how many lines of history VIM has to remember
+if !isdirectory(expand("~/.vim/bundle/vundle"))
+    call system("git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle")
+endif
+
+set nocompatible
+filetype off
+set rtp+=~/.vim/bundle/vundle
+
+call vundle#rc()
+Bundle 'gmarik/vundle'
+Bundle 'nanotech/jellybeans.vim'
+Bundle 'tomasr/molokai'
+Bundle 'tpope/vim-fugitive'
+Bundle 'bling/vim-airline'
+Bundle 'junegunn/vim-easy-align'
+Bundle 'scrooloose/nerdtree'
+
+" Automatically install bundles on first run
+if !isdirectory(expand("~/.vim/bundle/vim-airline"))
+    execute 'silent BundleInstall'
+    execute 'silent q'
+endif
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" -> General                                                               
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+filetype plugin indent on   " detect file type and load indents and plugins
+
 set history=500
+set autoread                " auto reload buffer when file modified externally
 
-" Enable filetype plugins
-filetype plugin on
-filetype indent on
+"when forgetting to sudo
+cmap w!! w !sudo tee > /dev/null %
 
-" Set to auto read when a file is changed from the outside
-set autoread
-
-" With a map leader it's possible to do extra key combinations
-" like <leader>w saves the current file
-let mapleader = ","
-let g:mapleader = ","
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => VIM user interface
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" -> VIM UI                                                               
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set laststatus=2
+set noshowmode
 
 " Turn off auto comment
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
@@ -51,7 +73,6 @@ set cmdheight=1
 
 " A buffer becomes hidden when it is abandoned
 set hid
-
 " Configure backspace so it acts as it should act
 set backspace=eol,start,indent
 set whichwrap+=<,>,h,l
@@ -69,7 +90,7 @@ set hlsearch
 set incsearch
 
 " Don't redraw while executing macros (good performance config)
-set lazyredraw
+"set lazyredraw
 
 " For regular expressions turn magic on
 set magic
@@ -84,48 +105,51 @@ set noerrorbells
 set novisualbell
 set t_vb=
 set tm=500
+set number                  " show line numbers
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" -> Color and Fonts                                                              
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+syntax on                   " turn on syntax highlighting
+colorscheme molokai      	" syntax highlighting colour
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Colors and Fonts
+" -> Files, backups and undo
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" Enable syntax highlighting
-syntax enable
-
-" Theme
-set background=light
-colorscheme molokai
-
-" Use Unix as the standard file type
-set ffs=unix,dos,mac
+set clipboard=unnamed       " yank and paste using system clipboard
+set encoding=utf-8          " default character encoding
+set hidden                  " do not unload buffers that get hidden
+set noswapfile              " do not use a swap file for buffers
+set nowritebackup           " do not make backup before overwriting file
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Files, backups and undo
+" -> Text, tab and indent related
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" Turn backup off, since most stuff is in SVN, git et.c anyway...
-set nobackup
-set nowb
-set noswapfile
+set nowrap                  " do not wrap text
+set scrolloff=3             " keep minimal number of lines above/below cursor
+set showcmd                 " show command line at bottom of screen
+set sidescroll=3            " scroll sideways 3 characters at a time
+set splitright              " open vertical split right of current window
+set wildmenu                " tab auto-complete for commands
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Text, tab and indent related
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set backspace=2             " make backspace behave normally
+set expandtab               " insert tabs as spaces
+set shiftwidth=4            " number of spaces for auto indent and line shift
+set cindent                 " syntax-aware auto indent
+set smarttab                " <BS> deletes a shiftwidth worth of space
+set softtabstop=4           " number of spaces pressing <Tab> counts for
+set tabstop=4               " number of spaces a <Tab> in the file counts for
 
-" Use spaces instead of tabs
-set expandtab
+" In Makefiles DO NOT use spaces instead of tabs
+autocmd FileType make setlocal noexpandtab
 
-" Be smart when using tabs ;)
-set smarttab
+" Preserve indentation while pasting text from the OS X clipboard
+noremap <leader>p :set paste<CR>:put *<CR>:set nopaste<CR>
 
-" 1 tab == 2 spaces
-set shiftwidth=2
-set tabstop=2
-set softtabstop=2
-
-set ai "Auto indent
-set si "Smart indent
-set wrap "Wrap lines
 
 " Return to last edit position when opening files (You want this!)
 autocmd BufReadPost *
@@ -136,50 +160,11 @@ autocmd BufReadPost *
 set viminfo^=%
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Moving around, tabs, windows and buffers
+" -> Plugin specific
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
-map <space> /
-map <c-space> ?
+map <Leader>a <Plug>(EasyAlign)
+map <Leader>n :NERDTreeToggle<CR>
 
-""""""""""""""""""""""""""""""
-" => Status line
-""""""""""""""""""""""""""""""
-
-" Always show the status line
-set laststatus=2
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Addons
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-set encoding=utf8
-set nocp
-set nocompatible
-
-" Quick Exiting and Saving
-nnoremap <silent> q :q!<CR>
-nnoremap <silent> w :w!<CR>
-
-" Paste is useful when pasting from non-vim sources
-nnoremap <silent> <F2> :set paste<CR>
-nnoremap <silent> <F3> :set nopaste<CR> 
-
-" Toggle Tagbar
-nnoremap <silent> <F9> :TagbarToggle<CR> 
-
-" Easy Window Switching
-nmap <silent> <C-m> :wincmd l<CR>
-
-" note: For those forking my repo, these bindings are highly customized
-
-" More intuitive start and end
-noremap <buffer> <silent> - 0
-noremap <buffer> <silent> = $
-noremap 0 <Nop>
-noremap $ <Nop>
-
-" Call plugins from Pathogen
-call pathogen#infect()
-call pathogen#helptags()
+let g:airline#extensions#whitespace#enabled = 0
+let g:airline_powerline_fonts = 1
