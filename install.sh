@@ -12,9 +12,16 @@ cp -f colordiff $HOME/.colordiff
 cp -f colordiffrc $HOME/.colordiffrc
 cp -f gitconfig $HOME/.gitconfig
 cp -f gitignore $HOME/.gitignore
-cp -f htop $HOME/.htop
 cp -f htoprc $HOME/.htoprc
-cp -f osx $HOME/.osx
+  
+#Get the correct htop for the system
+
+if [[ $(uname) == 'Linux' ]]; then
+    cp -f htop-linux $HOME/.htop
+elif [[ $(uname) == 'Darwin' ]]; then
+    cp -f htop-osx $HOME/.htop
+fi
+
 
 cp -rf lesspipe .lesspipe
 cp -rf .lesspipe $HOME
