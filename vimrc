@@ -112,6 +112,7 @@ set number                  " show line numbers
 " -> Color and Fonts                                                              
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+set t_Co=256                " enable 256-color mode
 syntax on                   " turn on syntax highlighting
 colorscheme molokai      	" syntax highlighting colour
 

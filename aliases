@@ -1,0 +1,51 @@
+
+# Aliases
+# Easy edits to bash/zsh files
+alias bashrc="vim ~/.bashrc; source ~/.bashrc"
+
+# Easy directory traveral
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+
+# tiny aliases for misc things
+alias c="print '\a'; clear;"
+alias e="exit"
+alias v="vim"
+
+
+# tmux things
+alias tnew="tmux new"
+alias tatt="tmux attach"
+alias tls="tmux ls"
+
+# git things
+alias gadd="git add"
+alias gs="git status"
+alias gpull="git pull"
+alias gpush="git push"
+alias gnotrack="git update-index --assume-unchanged"
+alias gtrack="git update-index --no-assume-unchanged"
+
+gcom () {
+    git commit -am $1
+}
+
+gita () {
+  git add *; git commit -m $1; sleep 1; git push;
+}
+
+platform=$(uname)
+
+if [[ $platform == 'Linux' ]]; then
+    # Linux things
+    alias ls='ls --color=auto'
+    alias l='ls -lahF --color=always'
+elif [[ $platform == 'Darwin' ]]; then
+    # OS X things
+    alias pb="pbpaste | pbcopy"
+    alias ls='ls -G'
+    alias l='ls -lahFG'
+    alias o="open"
+fi
+

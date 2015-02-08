@@ -4,18 +4,31 @@
 export PS1="\[\e[0;91m\]\u\[\e[0;36m\]@\[\e[0;91m\]\h\[\e[0m\] \[\e[0;36m\]\W\[\e[0m\] \[\e[1;91m\]:\[\e[0m\]"
 
 ### ALIASES ###
-
   alias c='clear'
   alias g='git'
   alias vi='vim'
-  alias l='ls'
+
+  #Make things look nice on OSX and Linux
+  platform=$(uname)
+
+if [[ $platform == 'Linux' ]]; then
+    # Linux things
+    alias ls='ls --color=auto'
+    alias l='ls -lahF --color=always'
+
+elif [[ $platform == 'Darwin' ]]; then
+    # OS X things
+    alias pb="pbpaste | pbcopy"
+    alias ls='ls -G'
+    alias o="open"
+    alias du1='du -h -d 1'
+fi
 
   #Make Things Look Nice
   alias df='df -h'
   alias du='du -ch'
   alias diff="$HOME/.colordiff"
-  alias grep='grepo'
-  alias ls='ls -hGF'
+  alias grep='grep --color=always'
   alias mkdir='mkdir -pv'
  
   # Enable aliases to be sudo’ed
@@ -25,6 +38,14 @@ export PS1="\[\e[0;91m\]\u\[\e[0;36m\]@\[\e[0;91m\]\h\[\e[0m\] \[\e[0;36m\]\W\[\
   alias mdstat='cat /proc/mdstat'
   alias ports='netstat -tulanp'
   alias wget='wget -c'
+
+  #Simple Git 
+  alias gadd="git add"
+  alias gs="git status"
+  alias gpull="git pull"
+  alias gpush="git push"
+  alias gnotrack="git update-index --assume-unchanged"
+  alias gtrack="git update-index --no-assume-unchanged"
 
   #Sorry Steam Locomotive and GTI
   alias sl='ls'
@@ -46,6 +67,16 @@ export PS1="\[\e[0;91m\]\u\[\e[0;36m\]@\[\e[0;91m\]\h\[\e[0m\] \[\e[0;36m\]\W\[\
 
   alias ssh='ssh -x'
   alias ssy='ssh -CX -c arcfour,blowfish-cbc'
+
+
+### GIT ###
+gcom () {
+    git commit -am $1
+}
+
+gita () {
+  git add *; git commit -m $1; sleep 1; git push;
+}
 
 ### COMPLETION ###	
   complete -cf sudo
