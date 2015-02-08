@@ -30,10 +30,6 @@ rm -rf .lesspipe
 cp -f profile $HOME/.profile
 cp -f smem $HOME/.smem
 
-cp -rf vim .vim
-cp -rf .vim $HOME
-rm -rf .vim
-
 cp -f vimrc $HOME/.vimrc
 cp -f wgetrc $HOME/.wgetrc
 
