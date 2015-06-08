@@ -168,4 +168,8 @@ alias x="extract"
 ## Brew Management
 alias update='brew update; brew upgrade; brew cleanup'
 
+## Ignore case when using tab complete
+bind "set completion-ignore-case on"
+
+
 cd $HOME
