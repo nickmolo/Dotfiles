@@ -139,11 +139,11 @@ set wildmenu                " tab auto-complete for commands
 
 set backspace=2             " make backspace behave normally
 set expandtab               " insert tabs as spaces
-set shiftwidth=4            " number of spaces for auto indent and line shift
+set shiftwidth=2            " number of spaces for auto indent and line shift
 set cindent                 " syntax-aware auto indent
 set smarttab                " <BS> deletes a shiftwidth worth of space
-set softtabstop=4           " number of spaces pressing <Tab> counts for
-set tabstop=4               " number of spaces a <Tab> in the file counts for
+set softtabstop=2           " number of spaces pressing <Tab> counts for
+set tabstop=2               " number of spaces a <Tab> in the file counts for
 
 " In Makefiles DO NOT use spaces instead of tabs
 autocmd FileType make setlocal noexpandtab
